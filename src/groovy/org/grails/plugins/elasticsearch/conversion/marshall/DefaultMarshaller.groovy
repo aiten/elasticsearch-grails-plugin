@@ -1,8 +1,10 @@
 package org.grails.plugins.elasticsearch.conversion.marshall
 
+import org.grails.plugins.elasticsearch.ElasticSearchContextHolder
+
 class DefaultMarshaller implements Marshaller {
   DefaultMarshallingContext marshallingContext
-  def elasticSearchContextHolder
+  ElasticSearchContextHolder elasticSearchContextHolder
 
   /**
    * Marshall the object considering the marshallingContext maxDepth.

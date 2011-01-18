@@ -1,7 +1,7 @@
 %{--
   Test GSP
 --}%
-<%@ page import="test.Tweet; test.User" contentType="text/html;charset=UTF-8" %>
+<%@ page import="test.ESUser; test.Tweet" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
   <title>ElasticSearch Test</title>
@@ -57,7 +57,7 @@
     ${flash.notice}
   </div>
 </g:if>
-<g:if test="${User.count() == 0}">
+<g:if test="${ESUser.count() == 0}">
   <div class="box">
     <g:form controller="elasticSearch" action="createUsers">
       <p>
@@ -67,10 +67,10 @@
   </div>
 </g:if>
 <g:else>
-  <g:set var="allUsers" value="${User.all}"/>
+  <g:set var="allUsers" value="${ESUser.all}"/>
   <div class="box">
     <span class="title">Available users</span>
-    <g:each var="u" in="${User.all}">
+    <g:each var="u" in="${ESUser.all}">
       <div class="user-file">
         <strong>Id: </strong>${u.id}<br/>
         <strong>Firstname: </strong>${u.firstname}<br/>

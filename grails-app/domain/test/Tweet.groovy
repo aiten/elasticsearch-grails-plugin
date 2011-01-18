@@ -6,7 +6,7 @@ class Tweet {
   }
 
   static belongsTo = [
-          user:User
+          user:ESUser
   ]
 
   static hasMany = [

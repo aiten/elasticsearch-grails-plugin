@@ -14,7 +14,7 @@ class ElasticSearchController {
       redirect(action: 'index')
       return
     }
-    User u = User.get(params.user.id)
+    ESUser u = User.get(params.user.id)
     if (!u) {
       flash.notice = "User not found"
       redirect(action: 'index')
@@ -74,7 +74,7 @@ class ElasticSearchController {
       redirect(action: 'index')
       return
     }
-    User u = User.get(params.user.id)
+    ESUser u = User.get(params.user.id)
     if (!u) {
       flash.notice = "User not found"
       redirect(action: 'index')

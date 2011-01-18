@@ -1,6 +1,6 @@
 package test
 
-class User {
+class ESUser {
   static searchable = {
     except = 'password'
     lastname boost:20

@@ -2,8 +2,12 @@ package org.grails.plugins.elasticsearch
 
 import org.codehaus.groovy.grails.commons.GrailsDomainClass
 import org.grails.plugins.elasticsearch.mapping.SearchableClassMapping
+import org.apache.log4j.Logger
 
 class ElasticSearchContextHolder {
+
+  private static final Logger LOG = Logger.getLogger(this.class)
+
   ConfigObject config
   Map<String, SearchableClassMapping> mapping = [:]
 
@@ -16,6 +20,7 @@ class ElasticSearchContextHolder {
   }
 
   SearchableClassMapping getMappingContext(GrailsDomainClass domainClass) {
+    LOG.debug "Getting mapping context for: ${domainClass}"
     mapping[domainClass.propertyName]
   }
 }
