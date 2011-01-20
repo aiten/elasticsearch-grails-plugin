@@ -2,8 +2,8 @@ package test
 
 class TestCaseService {
   public createUsers(){
-    ESUser u = new ESUser(lastname:'DA', firstname:'John', password:'myPass')
-    ESUser u2 = new ESUser(lastname:'DA', firstname:'Bernardo', password:'password')
+    User u = new User(lastname:'DA', firstname:'John', password:'myPass')
+    User u2 = new User(lastname:'DA', firstname:'Bernardo', password:'password')
     u.save()
     u2.save()
   }
@@ -15,7 +15,7 @@ class TestCaseService {
     t.delete()
   }
 
-  public addTweet(String message, ESUser u, String tags = null){
+  public addTweet(String message, User u, String tags = null){
     Tweet t = new Tweet(message: message, user: u)
     // Add tweet to user
     u.addToTweets(t)
@@ -35,7 +35,7 @@ class TestCaseService {
     t.save()
   }
 
-  public updateActivity(ESUser u, String activity){
+  public updateActivity(User u, String activity){
     u.activity = activity
     u.save()
   }

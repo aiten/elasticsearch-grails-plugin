@@ -20,7 +20,6 @@ class ElasticSearchContextHolder {
   }
 
   SearchableClassMapping getMappingContext(GrailsDomainClass domainClass) {
-    LOG.debug "Getting mapping context for: ${domainClass}"
     mapping[domainClass.propertyName]
   }
 }

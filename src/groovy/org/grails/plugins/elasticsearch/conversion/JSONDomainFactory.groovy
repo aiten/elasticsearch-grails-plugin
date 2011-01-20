@@ -1,5 +1,6 @@
 package org.grails.plugins.elasticsearch.conversion
 
+
 import org.codehaus.groovy.grails.commons.GrailsDomainClassProperty
 import org.elasticsearch.common.xcontent.XContentBuilder
 import static org.elasticsearch.common.xcontent.XContentFactory.*
@@ -82,7 +83,6 @@ class JSONDomainFactory {
         def domainClass = getDomainClass(instance)
         def json = jsonBuilder().startObject()
         // TODO : add maxDepth in custom mapping (only for "seachable components")
-        LOG.debug "Building JSON for ${instance}"
         def mappingProperties = elasticSearchContextHolder.getMappingContext(domainClass)?.propertiesMapping
         def marshallingContext = new DefaultMarshallingContext(maxDepth: 5, parentFactory: this)
         marshallingContext.marshallStack.push(instance)
@@ -92,9 +92,7 @@ class JSONDomainFactory {
                 continue
             }
             marshallingContext.lastParentPropertyName = prop.name
-            println "Trying to Marshal ${prop.name} of ${instance}..."
             def res = delegateMarshalling(instance."${prop.name}", marshallingContext)
-            println "...Marshalled ${prop.name}  of ${instance}"
             json.field(prop.name, res)
         }
         marshallingContext.marshallStack.pop()
