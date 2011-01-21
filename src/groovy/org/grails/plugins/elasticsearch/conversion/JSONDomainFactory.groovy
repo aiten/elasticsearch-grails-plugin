@@ -82,11 +82,18 @@ class JSONDomainFactory {
     public XContentBuilder buildJSON(instance) {
         def domainClass = getDomainClass(instance)
         def json = jsonBuilder().startObject()
+
         // TODO : add maxDepth in custom mapping (only for "seachable components")
-        def mappingProperties = elasticSearchContextHolder.getMappingContext(domainClass)?.propertiesMapping
+        List mappingProperties = elasticSearchContextHolder.getMappingContext(domainClass)?.propertiesMapping
+        if (LOG.isDebugEnabled()) {
+            mappingProperties.each { SearchableClassPropertyMapping property ->
+                LOG.debug("Mapping property: ${property.propertyName}")
+            }
+        }
+
         def marshallingContext = new DefaultMarshallingContext(maxDepth: 5, parentFactory: this)
         marshallingContext.marshallStack.push(instance)
-        // Build the json-formated map that will contain the data to index
+
         for (GrailsDomainClassProperty prop in domainClass.persistentProperties) {
             if (!(prop.name in mappingProperties*.propertyName)) {
                 continue
