@@ -86,9 +86,7 @@ class JSONDomainFactory {
         // TODO : add maxDepth in custom mapping (only for "seachable components")
         List mappingProperties = elasticSearchContextHolder.getMappingContext(domainClass)?.propertiesMapping
         if (LOG.isDebugEnabled()) {
-            mappingProperties.each { SearchableClassPropertyMapping property ->
-                LOG.debug("Mapping property: ${property.propertyName}")
-            }
+            LOG.debug "Mapping properties: ${mappingProperties.collect()}"
         }
 
         def marshallingContext = new DefaultMarshallingContext(maxDepth: 5, parentFactory: this)
@@ -96,6 +94,7 @@ class JSONDomainFactory {
 
         for (GrailsDomainClassProperty prop in domainClass.persistentProperties) {
             if (!(prop.name in mappingProperties*.propertyName)) {
+                LOG.debug("Skipping property ${prop.name} due to mapping configuration.")
                 continue
             }
             marshallingContext.lastParentPropertyName = prop.name
