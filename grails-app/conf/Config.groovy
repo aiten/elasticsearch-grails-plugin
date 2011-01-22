@@ -21,8 +21,8 @@ log4j = {
 
   warn 'org.mortbay.log'
 
-  debug 'org.grails.plugins.elasticSearch'
-  //info 'org.grails.plugins.elasticSearch'
+  debug 'org.grails.plugins.elasticsearch'
+  //info 'org.grails.plugins.elasticsearch'
 }
 elasticSearch {
   /**

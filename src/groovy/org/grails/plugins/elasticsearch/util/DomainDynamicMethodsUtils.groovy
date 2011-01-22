@@ -12,7 +12,7 @@ import org.elasticsearch.client.Requests
 import org.apache.commons.logging.LogFactory
 
 class DomainDynamicMethodsUtils {
-  static LOG = LogFactory.getLog("org.grails.plugins.elasticSearch.DomainDynamicMethodsUtils")
+  static LOG = LogFactory.getLog(this.class.name)
   /**
    * Resolve the ElasticSearch mapping from the static "searchable" property (closure or boolean) in domain classes
    * @param domainClasses

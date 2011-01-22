@@ -13,7 +13,7 @@ import org.apache.commons.logging.LogFactory
 import org.grails.plugins.elasticsearch.util.DomainDynamicMethodsUtils
 
 class ElasticsearchGrailsPlugin {
-  static LOG = LogFactory.getLog("org.grails.plugins.elasticSearch.ElasticsearchGrailsPlugin")
+  static LOG = LogFactory.getLog(this.class.name)
 
   // the plugin version
   def version = "0.13.0-aj"

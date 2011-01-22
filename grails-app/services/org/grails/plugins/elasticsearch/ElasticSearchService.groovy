@@ -17,7 +17,7 @@ import org.apache.commons.logging.LogFactory
 import org.elasticsearch.common.xcontent.XContentBuilder
 
 class ElasticSearchService implements GrailsApplicationAware {
-    static LOG = LogFactory.getLog("org.grails.plugins.elasticSearch.ElasticSearchService")
+    static LOG = LogFactory.getLog(this.class.name)
     GrailsApplication grailsApplication
     def elasticSearchHelper
     def sessionFactory
