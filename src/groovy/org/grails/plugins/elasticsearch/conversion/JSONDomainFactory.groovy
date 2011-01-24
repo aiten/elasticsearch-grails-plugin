@@ -15,12 +15,13 @@ import org.grails.plugins.elasticsearch.conversion.marshall.CollectionMarshaller
 import org.codehaus.groovy.grails.commons.DomainClassArtefactHandler
 import org.grails.plugins.elasticsearch.mapping.SearchableClassPropertyMapping
 import org.apache.log4j.Logger
+import org.grails.plugins.elasticsearch.ElasticSearchContextHolder
 
 class JSONDomainFactory {
 
     private static final Logger LOG = Logger.getLogger(this.class)
 
-    def elasticSearchContextHolder
+    ElasticSearchContextHolder elasticSearchContextHolder
 
     /**
      * The default marshallers, not defined by user
@@ -59,7 +60,6 @@ class JSONDomainFactory {
             if (inheritedMarshaller) {
                 marshaller = DEFAULT_MARSHALLERS[inheritedMarshaller.key].newInstance()
                 marshaller.marshallingContext = marshallingContext
-                // If no marshaller was found, use the default one
             } else {
                 marshaller = new DefaultMarshaller(marshallingContext: marshallingContext)
             }
@@ -70,7 +70,10 @@ class JSONDomainFactory {
 
     private static GrailsDomainClass getDomainClass(instance) {
         def grailsApplication = ApplicationHolder.application
-        grailsApplication.domainClasses.find {it.naturalName == instance.class?.simpleName}
+        GrailsDomainClass foundDomainClass = grailsApplication.domainClasses.find { GrailsDomainClass domainClass ->
+            domainClass.shortName == instance.class?.simpleName
+        }
+        return foundDomainClass
     }
 
     /**
@@ -83,7 +86,12 @@ class JSONDomainFactory {
         def domainClass = getDomainClass(instance)
         def json = jsonBuilder().startObject()
 
+        if (!domainClass) {
+            // For bug raised by me. No idea why we can't get the domain class here.
+            throw new UnsupportedOperationException("Unable to retrieve Domain Class using getDomainClass for ${instance}")
+        }
         // TODO : add maxDepth in custom mapping (only for "seachable components")
+
         List mappingProperties = elasticSearchContextHolder.getMappingContext(domainClass)?.propertiesMapping
         if (LOG.isDebugEnabled()) {
             LOG.debug "Mapping properties: ${mappingProperties.collect()}"

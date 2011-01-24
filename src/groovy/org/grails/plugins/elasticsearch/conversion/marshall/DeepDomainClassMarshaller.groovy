@@ -10,7 +10,7 @@ class DeepDomainClassMarshaller extends DefaultMarshaller {
     def marshallResult = [id: instance.id, 'class': instance.class?.name]
     def domainClass = getDomainClass(instance)
     def mappingProperties = elasticSearchContextHolder.getMappingContext(domainClass)?.propertiesMapping
-    for (GrailsDomainClassProperty prop in domainClass.persistantProperties) {
+    for (GrailsDomainClassProperty prop in domainClass.persistentProperties) {
       if(!(prop.name in mappingProperties*.propertyName)){
         continue
       }
@@ -42,6 +42,6 @@ class DeepDomainClassMarshaller extends DefaultMarshaller {
 
   private GrailsDomainClass getDomainClass(instance) {
     def grailsApplication = ApplicationHolder.application
-    grailsApplication.domainClasses.find {it.naturalName == instance.class?.simpleName}
+    grailsApplication.domainClasses.find {it.shortName == instance.class?.simpleName}
   }
 }
