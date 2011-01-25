@@ -1,14 +1,14 @@
 package org.grails.plugins.elasticsearch.conversion.marshall
 
 import org.codehaus.groovy.grails.commons.GrailsDomainClassProperty
-import org.codehaus.groovy.grails.commons.ApplicationHolder
-import org.codehaus.groovy.grails.commons.GrailsDomainClass
 import org.codehaus.groovy.grails.commons.DomainClassArtefactHandler
+import org.grails.plugins.elasticsearch.util.DomainClassRegistry
+import org.codehaus.groovy.grails.commons.GrailsDomainClass
 
 class DeepDomainClassMarshaller extends DefaultMarshaller {
   protected doMarshall(instance) {
     def marshallResult = [id: instance.id, 'class': instance.class?.name]
-    def domainClass = getDomainClass(instance)
+    GrailsDomainClass domainClass = DomainClassRegistry.getDomainClass(instance)
     def mappingProperties = elasticSearchContextHolder.getMappingContext(domainClass)?.propertiesMapping
     for (GrailsDomainClassProperty prop in domainClass.persistentProperties) {
       if(!(prop.name in mappingProperties*.propertyName)){
@@ -40,8 +40,4 @@ class DeepDomainClassMarshaller extends DefaultMarshaller {
     return []
   }
 
-  private GrailsDomainClass getDomainClass(instance) {
-    def grailsApplication = ApplicationHolder.application
-    grailsApplication.domainClasses.find {it.shortName == instance.class?.simpleName}
-  }
 }

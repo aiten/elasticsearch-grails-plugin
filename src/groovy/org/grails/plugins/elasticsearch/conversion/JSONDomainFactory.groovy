@@ -16,6 +16,8 @@ import org.codehaus.groovy.grails.commons.DomainClassArtefactHandler
 import org.grails.plugins.elasticsearch.mapping.SearchableClassPropertyMapping
 import org.apache.log4j.Logger
 import org.grails.plugins.elasticsearch.ElasticSearchContextHolder
+import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.grails.plugins.elasticsearch.util.DomainClassRegistry
 
 class JSONDomainFactory {
 
@@ -68,14 +70,6 @@ class JSONDomainFactory {
         marshaller.marshall(object)
     }
 
-    private static GrailsDomainClass getDomainClass(instance) {
-        def grailsApplication = ApplicationHolder.application
-        GrailsDomainClass foundDomainClass = grailsApplication.domainClasses.find { GrailsDomainClass domainClass ->
-            domainClass.shortName == instance.class?.simpleName
-        }
-        return foundDomainClass
-    }
-
     /**
      * Build an XContentBuilder representing a domain instance in JSON.
      * Use as a source to an index request to ElasticSearch.
@@ -83,11 +77,10 @@ class JSONDomainFactory {
      * @return
      */
     public XContentBuilder buildJSON(instance) {
-        def domainClass = getDomainClass(instance)
+        GrailsDomainClass domainClass = DomainClassRegistry.getDomainClass(instance)
         def json = jsonBuilder().startObject()
 
         if (!domainClass) {
-            // For bug raised by me. No idea why we can't get the domain class here.
             throw new UnsupportedOperationException("Unable to retrieve Domain Class using getDomainClass for ${instance}")
         }
         // TODO : add maxDepth in custom mapping (only for "seachable components")
